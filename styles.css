@@ -1,0 +1,61 @@
+body {
+  display: flex;
+  flex-direction: column;
+  background-color: grey;
+  height: 100vh;
+  font-family: "Roboto", sans-serif;
+  text-align: center;
+}
+header {
+  background-color: darkgray;
+}
+.mainContainer {
+  flex-grow: 0.95;
+  background-color: grey;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.gameBoard {
+  width: 450px;
+  height: 450px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.gameBoardRow > button {
+  height: 150px;
+  width: 150px;
+  outline: 0;
+  text-align: center;
+  vertical-align: top;
+  border: 10px solid;
+  background-color: grey;
+  font-size: 75px;
+}
+#space1,
+#space4,
+#space7 {
+  border-left: 0;
+}
+#space3,
+#space6,
+#space9 {
+  border-right: 0;
+}
+#space1,
+#space2,
+#space3 {
+  border-top: 0;
+}
+#space7,
+#space8,
+#space9 {
+  border-bottom: 0;
+}
+footer {
+  flex-grow: 0.05;
+  background-color: darkgray;
+}
