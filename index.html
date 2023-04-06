@@ -10,28 +10,22 @@
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap"
       rel="stylesheet"
     />
-    <title>Document</title>
+    <title>Tic-Tac-Toe</title>
   </head>
   <body>
     <header><h1>Tic-Tac-Toe</h1></header>
     <div class="mainContainer">
-      <div class="gameBoard">
-        <div class="gameBoardRow">
-          <button class="gameBtn" id="space1"></button
-          ><button class="gameBtn" id="space2"></button
-          ><button class="gameBtn" id="space3"></button>
-        </div>
-        <div class="gameBoardRow">
-          <button class="gameBtn" id="space4"></button
-          ><button class="gameBtn" id="space5"></button
-          ><button class="gameBtn" id="space6"></button>
-        </div>
-        <div class="gameBoardRow">
-          <button class="gameBtn" id="space7"></button
-          ><button class="gameBtn" id="space8"></button
-          ><button class="gameBtn" id="space9"></button>
-        </div>
-      </div>
+      <h1 id="getUserInput">Choose Piece and Name for Player 1</h1>
+      <input id="name" type="text" />
+
+      <class class="btnContainer">
+        <class class="playerInfo">
+          <button onclick="player1Chosen('X')" id="X">X</button>
+        </class>
+        <class class="playerInfo">
+          <button onclick="player1Chosen('O')" id="O">O</button>
+        </class>
+      </class>
     </div>
     <footer></footer>
   </body>

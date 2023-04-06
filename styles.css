@@ -13,6 +13,7 @@ header {
   flex-grow: 0.95;
   background-color: grey;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -58,4 +59,40 @@ header {
 footer {
   flex-grow: 0.05;
   background-color: darkgray;
+}
+.winnerAlert {
+  position: absolute;
+  width: 500px;
+  top: 150px;
+  background-color: red;
+  visibility: hidden;
+}
+/* index page css */
+#X,
+#O {
+  color: white;
+  background-color: black;
+  width: 150px;
+  height: 150px;
+  margin: 10px;
+  font-size: 30px;
+}
+#playerOptions {
+  margin: 10px;
+  font-size: 20px;
+}
+.radioContainer {
+  font-size: 20px;
+}
+.btnContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.playerInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
 }
