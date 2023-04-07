@@ -1,4 +1,7 @@
 const gameBtns = document.getElementsByClassName("gameBtn");
+const player1Display = document.getElementById("player1");
+const player2Display = document.getElementById("player2");
+
 let player1;
 let player2;
 //factory function to create players
@@ -13,7 +16,25 @@ player2 = playerFactory(
   localStorage.getItem("player2name"),
   localStorage.getItem("player2piece")
 );
-console.log(localStorage.getItem("player2name"));
+function setNames() {
+  console.log(
+    localStorage.getItem("player1name"),
+    localStorage.getItem("player1piece"),
+    localStorage.getItem("player2name"),
+    localStorage.getItem("player2piece")
+  );
+  player1Display.innerHTML =
+    localStorage.getItem("player1name") +
+    "(" +
+    localStorage.getItem("player1piece") +
+    ")";
+  player2Display.innerHTML =
+    localStorage.getItem("player2name") +
+    "(" +
+    localStorage.getItem("player2piece") +
+    ")";
+  player1Display.style.color = "green";
+}
 //object for game board
 const gameboardObject = (() => {
   let gameboard = [" ", " ", " ", " ", " ", " ", " ", " ", " "];
@@ -29,6 +50,8 @@ const gameboardObject = (() => {
 const game = (() => {
   let turn = player1;
   let winner = false;
+  function assignTurn() {}
+  let AI = false;
   function checkForWinner() {
     const winners = [
       [0, 1, 2],
@@ -61,6 +84,13 @@ const game = (() => {
     gameboardObject.displayBoard();
     checkForWinner();
     turn === player1 ? (turn = player2) : (turn = player1);
+    if (turn === player1 && winner === false) {
+      player1Display.style.color = "green";
+      player2Display.style.color = "black";
+    } else {
+      player2Display.style.color = "green";
+      player1Display.style.color = "black";
+    }
   }
   return { addMove, turn };
 })();
@@ -102,4 +132,7 @@ function player1Chosen(playerPiece) {
     document.getElementById(playerPiece).parentElement.remove();
     document.getElementById("name").value = "";
   }
+}
+function reset() {
+  window.location.href = "index.html";
 }

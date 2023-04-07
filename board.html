@@ -13,10 +13,20 @@
     <title>Tic-Tac-Toe</title>
   </head>
   <body
-    onload="gameboardObject.displayBoard(), addEvents()
+    onload="gameboardObject.displayBoard(), addEvents(), setNames()
   "
   >
-    <header><h1>Tic-Tac-Toe</h1></header>
+    <header>
+      <h1>Tic-Tac-Toe</h1>
+      <div class="playerContainer">
+        <div>
+          <h1 id="player1">Ben (X)</h1>
+        </div>
+        <div>
+          <h1 id="player2">Joe (O)</h1>
+        </div>
+      </div>
+    </header>
     <div class="mainContainer">
       <div class="gameBoard">
         <div class="gameBoardRow">
@@ -36,6 +46,7 @@
         </div>
       </div>
       <div class="winnerAlert" id="winnerAlert">
+        <button onclick="reset()">Reset</button>
         <h1 id="winnerId">Winner!</h1>
       </div>
     </div>

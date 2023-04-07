@@ -8,14 +8,20 @@ body {
 }
 header {
   background-color: darkgray;
+  flex-grow: 0.1;
 }
 .mainContainer {
-  flex-grow: 0.95;
+  flex-grow: 0.9;
   background-color: grey;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.playerContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 .gameBoard {
   width: 450px;
@@ -63,9 +69,15 @@ footer {
 .winnerAlert {
   position: absolute;
   width: 500px;
-  top: 150px;
+  top: 300px;
   background-color: red;
   visibility: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#winnerId {
+  margin: 10px;
 }
 /* index page css */
 #X,
