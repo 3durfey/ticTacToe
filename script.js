@@ -59,112 +59,137 @@ const AIobject = (() => {
     AIPiece === "X" ? (userPiece = "O") : (userPiece = "X");
     //first turn
     if (game.turnNum === 1) {
-      if (gameboardObject.gameboard[0] === "X") {
+      if (gameboardObject.gameboard[4] === " ") {
         game.addMove(4);
-        return;
-      } else if (gameboardObject.gameboard[2] === " ") {
-        game.addMove(2);
-        return;
-      } else if (gameboardObject.gameboard[6] === " ") {
-        game.addMove(6);
-        return;
-      } else if (gameboardObject.gameboard[8] === " ") {
-        game.addMove(8);
         return;
       }
     }
-    userNum = 0;
-    for (let x = 0; x < 9; x++) {
-      if (gameboardObject.gameboard[x] === userPiece) {
-        userNum = userNum + x;
+    let userSpots = 0;
+    let AIPieces = 0;
+    let blank = true;
+    let limit = 6;
+    let limit2 = 2;
+    let directionRight = 1;
+    let directionUpDown = 3;
+    let x = 0;
+    for (let y = 0; y <= limit; y += directionUpDown) {
+      userSpots = 0;
+      blank = -1;
+      AIPieces = 0;
+      for (x = 0; x <= limit2; x += directionRight) {
+        if (gameboardObject.gameboard[y + x] === userPiece) {
+          userSpots++;
+        } else if (gameboardObject.gameboard[y + x] === " ") {
+          blank = y + x;
+        }
+        if (gameboardObject.gameboard[y + x] === AIPiece) {
+          AIPieces++;
+        }
+      }
+      if (AIPieces === 2 && blank != -1) {
+        game.addMove(blank);
+        return;
+      }
+      if (userSpots > 1 && blank != -1 && blank != 1) {
+        game.addMove(blank);
+        return;
+      }
+      if (y === 6 && limit === 6) {
+        directionRight = 3;
+        directionUpDown = 1;
+        limit = 3;
+        limit2 = 6;
+        y = -1;
+        x = -3;
       }
     }
-    switch (userNum) {
-      case 1:
-        game.addMove(2);
-        break;
-      case 2:
-        game.addMove(1);
-        break;
-      case 3:
-        if (gameboardObject.gameboard[1] === userPiece) {
-          game.addMove(0);
-        } else {
-          game.addMove(6);
+    const arrayDiagonal = [
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+    limit = 8;
+    for (let x = 0; x < 2; x++) {
+      userSpots = 0;
+      blank = -1;
+      AIPieces = 0;
+      for (let y = 0; y < 3; y++) {
+        if (gameboardObject.gameboard[arrayDiagonal[x][y]] === userPiece) {
+          userSpots++;
+        } else if (gameboardObject.gameboard[arrayDiagonal[x][y]] === " ") {
+          blank = arrayDiagonal[x][y];
         }
-        break;
-      case 4:
-        if (gameboardObject.gameboard[1] === userPiece) {
-          game.addMove(6);
-        } else {
-          game.addMove(8);
+        if (gameboardObject.gameboard[arrayDiagonal[x][y]] === AIPiece) {
+          AIPieces++;
         }
-        break;
-      case 5:
-        game.addMove(7);
-        break;
-      case 7:
-        if (gameboardObject.gameboard[2] === userPiece) {
-          game.addMove(8);
-        } else if (gameboardObject.gameboard[3] === userPiece) {
-          game.addMove(5);
-        } else {
-          game.addMove(3);
-        }
-        break;
-      case 6:
-        if (gameboardObject.gameboard[0] === userPiece) {
-          game.addMove(3);
-        } else {
-          game.addMove(6);
-        }
-        break;
-      case 8:
-        game.addMove(4);
-        break;
-      case 10:
-        if (gameboardObject.gameboard[2] === userPiece || game.turnNum > 5) {
-          game.addMove(5);
-        } else {
-          game.addMove(2);
-        }
-        break;
-      case 9:
-        if (gameboardObject.gameboard[2] === " ") {
-          game.addMove(0);
-        } else {
-          randomMove();
-        }
-        break;
-      case 11:
-        game.addMove(1);
-        break;
-      case 12:
-        game.addMove(0);
-        break;
-      case 13:
-        if (gameboardObject.gameboard[5] === userPiece) {
-          game.addMove(2);
-        } else {
-          game.addMove(8);
-        }
-        break;
-      case 14:
-        if (gameboardObject.gameboard[7] === " ") {
-          game.addMove(7);
-        } else {
-          randomMove();
-        }
-        break;
-      case 15:
-        if (gameboardObject.gameboard[6] === " ") {
-          game.addMove(6);
-        } else {
-          randomMove();
-        }
-        break;
-      default:
-        randomMove();
+      }
+      if (AIPieces === 2 && blank != -1) {
+        game.addMove(blank);
+        return;
+      }
+      if (userSpots > 1 && blank != -1) {
+        game.addMove(blank);
+        return;
+      }
+    }
+    /*need to check for winning 2 piecs
+    if (gameboardObject.gameboard[0] === userPiece) {
+      userSpots++;
+    }
+    if (gameboardObject.gameboard[4] === userPiece) {
+      userSpots++;
+    }
+    if (gameboardObject.gameboard[8] === userPiece) {
+      userSpots++;
+    }
+    if (gameboardObject.gameboard[0] === " ") {
+      blank = 0;
+    }
+    if (gameboardObject.gameboard[4] === " ") {
+      blank = 4;
+    }
+    if (gameboardObject.gameboard[8] === " ") {
+      blank = 8;
+    }
+    if (userSpots > 1 && blank != -1) {
+      game.addMove(blank);
+      return;
+    }
+    blank = -1;
+    userSpots = 0;
+    if (gameboardObject.gameboard[6] === userPiece) {
+      userSpots++;
+    }
+    if (gameboardObject.gameboard[4] === userPiece) {
+      userSpots++;
+    }
+    if (gameboardObject.gameboard[2] === userPiece) {
+      userSpots++;
+    }
+    if (gameboardObject.gameboard[6] === " ") {
+      blank = 6;
+    }
+    if (gameboardObject.gameboard[4] === " ") {
+      blank = 4;
+    }
+    if (gameboardObject.gameboard[1] === " ") {
+      blank = 1;
+    }
+    if (userSpots > 1 && blank != -1) {
+      game.addMove(blank);
+      return;
+    } else if (blank != -1 && gameboardObject.gameboard[0] !== userPiece) {
+      game.addMove(blank);
+      return;
+    }
+    */
+    for (let z = 0; z < 9; z++) {
+      if (z != blank && gameboardObject.gameboard[z] === " ") {
+        game.addMove(z);
+        return;
+      } else if (z === blank && gameboardObject.gameboard[z] === " ") {
+        game.addMove(3);
+        return;
+      }
     }
   }
   return { move };
@@ -186,6 +211,8 @@ const game = (() => {
       [0, 4, 8],
       [6, 4, 2],
     ];
+    let spots = 0;
+
     for (let x = 0; x < 8; x++) {
       if (
         gameboardObject.gameboard[winners[x][0]] === turn.playerPiece &&
@@ -196,6 +223,19 @@ const game = (() => {
         document.getElementById("winnerId").innerHTML =
           turn.name + " is The Winner";
         winner = true;
+      }
+      if (
+        gameboardObject.gameboard[winners[x][0]] !== " " &&
+        gameboardObject.gameboard[winners[x][1]] !== " " &&
+        gameboardObject.gameboard[winners[x][2]] !== " "
+      ) {
+        spots += 3;
+      }
+      if (spots === 9 && x === 2) {
+        document.getElementById("winnerAlert").style.visibility = "visible";
+        document.getElementById("winnerId").innerHTML = "Draw";
+        winner = true;
+        return;
       }
     }
   }
