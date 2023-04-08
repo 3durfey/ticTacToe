@@ -267,7 +267,7 @@ function player1Chosen(playerPiece) {
   }
 }
 function reset() {
-  window.location.href = "index.html";
+  window.location.reload();
 }
 function vsAI() {
   localStorage.setItem("player1name", tempPlayer1.name);
