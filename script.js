@@ -9,24 +9,20 @@ const playerFactory = (name, playerPiece) => {
   return { name, playerPiece };
 };
 player1 = playerFactory(
-  localStorage.getItem("player1name"),
-  localStorage.getItem("player1piece")
+  //localStorage.getItem("player1name"),
+  //localStorage.getItem("player1piece")
+  "User",
+  "X"
 );
 player2 = playerFactory(
-  localStorage.getItem("player2name"),
-  localStorage.getItem("player2piece")
+  // localStorage.getItem("player2name"),
+  //localStorage.getItem("player2piece")
+  "AI",
+  "O"
 );
 function setNames() {
-  player1Display.innerHTML =
-    localStorage.getItem("player1name") +
-    "(" +
-    localStorage.getItem("player1piece") +
-    ")";
-  player2Display.innerHTML =
-    localStorage.getItem("player2name") +
-    "(" +
-    localStorage.getItem("player2piece") +
-    ")";
+  player1Display.innerHTML = "User" + "(X)";
+  player2Display.innerHTML = "AI" + "(O)";
   player1Display.style.color = "green";
   game.AI = true;
 }
@@ -62,6 +58,9 @@ const AIobject = (() => {
       if (gameboardObject.gameboard[4] === " ") {
         game.addMove(4);
         return;
+      } else if (gameboardObject.gameboard[0] === " ") {
+        game.addMove(0);
+        return;
       }
     }
     let userSpots = 0;
@@ -90,7 +89,7 @@ const AIobject = (() => {
         game.addMove(blank);
         return;
       }
-      if (userSpots > 1 && blank != -1 && blank != 1) {
+      if (userSpots > 1 && blank != -1) {
         game.addMove(blank);
         return;
       }
@@ -107,7 +106,6 @@ const AIobject = (() => {
       [0, 4, 8],
       [2, 4, 6],
     ];
-    limit = 8;
     for (let x = 0; x < 2; x++) {
       userSpots = 0;
       blank = -1;
@@ -131,58 +129,25 @@ const AIobject = (() => {
         return;
       }
     }
-    /*need to check for winning 2 piecs
-    if (gameboardObject.gameboard[0] === userPiece) {
-      userSpots++;
-    }
-    if (gameboardObject.gameboard[4] === userPiece) {
-      userSpots++;
-    }
-    if (gameboardObject.gameboard[8] === userPiece) {
-      userSpots++;
-    }
-    if (gameboardObject.gameboard[0] === " ") {
-      blank = 0;
-    }
-    if (gameboardObject.gameboard[4] === " ") {
-      blank = 4;
-    }
-    if (gameboardObject.gameboard[8] === " ") {
-      blank = 8;
-    }
-    if (userSpots > 1 && blank != -1) {
-      game.addMove(blank);
-      return;
-    }
-    blank = -1;
     userSpots = 0;
-    if (gameboardObject.gameboard[6] === userPiece) {
-      userSpots++;
+    AIPieces = 0;
+    blank = -1;
+    const cornerPieces = [0, 2, 6, 8];
+    for (let x = 0; x < 4; x++) {
+      if (gameboardObject.gameboard[cornerPieces[x]] === userPiece) {
+        userSpots++;
+      } else if (gameboardObject.gameboard[cornerPieces[x]] === AIPiece) {
+        AIPieces++;
+      } else if (gameboardObject.gameboard[cornerPieces[x]] === " ") {
+        blank = cornerPieces[x];
+      }
     }
-    if (gameboardObject.gameboard[4] === userPiece) {
-      userSpots++;
-    }
-    if (gameboardObject.gameboard[2] === userPiece) {
-      userSpots++;
-    }
-    if (gameboardObject.gameboard[6] === " ") {
-      blank = 6;
-    }
-    if (gameboardObject.gameboard[4] === " ") {
-      blank = 4;
-    }
-    if (gameboardObject.gameboard[1] === " ") {
-      blank = 1;
-    }
-    if (userSpots > 1 && blank != -1) {
-      game.addMove(blank);
-      return;
-    } else if (blank != -1 && gameboardObject.gameboard[0] !== userPiece) {
+    if (userSpots > 1 && blank != -1 && AIPieces + userSpots != 4) {
       game.addMove(blank);
       return;
     }
-    */
-    for (let z = 0; z < 9; z++) {
+
+    for (let z = 8; z >= 0; z--) {
       if (z != blank && gameboardObject.gameboard[z] === " ") {
         game.addMove(z);
         return;
