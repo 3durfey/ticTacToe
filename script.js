@@ -8,21 +8,11 @@ let player2;
 const playerFactory = (name, playerPiece) => {
   return { name, playerPiece };
 };
-player1 = playerFactory(
-  //localStorage.getItem("player1name"),
-  //localStorage.getItem("player1piece")
-  "User",
-  "X"
-);
-player2 = playerFactory(
-  // localStorage.getItem("player2name"),
-  //localStorage.getItem("player2piece")
-  "AI",
-  "O"
-);
+player1 = playerFactory("User", "X");
+player2 = playerFactory("AI", "O");
 function setNames() {
   player1Display.innerHTML = "User" + "(X)";
-  player2Display.innerHTML = "AI" + "(O)";
+  player2Display.innerHTML = "Computer" + "(O)";
   player1Display.style.color = "green";
   game.AI = true;
 }
@@ -63,6 +53,7 @@ const AIobject = (() => {
         return;
       }
     }
+    const cornerPieces = [0, 2, 6, 8];
     let userSpots = 0;
     let AIPieces = 0;
     let blank = true;
@@ -71,6 +62,36 @@ const AIobject = (() => {
     let directionRight = 1;
     let directionUpDown = 3;
     let x = 0;
+    //check if ia can win
+    for (let y = 0; y <= limit; y += directionUpDown) {
+      blank = -1;
+      AIPieces = 0;
+      for (x = 0; x <= limit2; x += directionRight) {
+        if (gameboardObject.gameboard[y + x] === " ") {
+          blank = y + x;
+        }
+        if (gameboardObject.gameboard[y + x] === AIPiece) {
+          AIPieces++;
+        }
+      }
+      if (AIPieces === 2 && blank != -1) {
+        game.addMove(blank);
+        return;
+      }
+      if (y === 6 && limit === 6) {
+        directionRight = 3;
+        directionUpDown = 1;
+        limit = 3;
+        limit2 = 6;
+        y = -1;
+        x = -3;
+      }
+    }
+    limit = 6;
+    limit2 = 2;
+    directionRight = 1;
+    directionUpDown = 3;
+    //block user from winning
     for (let y = 0; y <= limit; y += directionUpDown) {
       userSpots = 0;
       blank = -1;
@@ -81,13 +102,6 @@ const AIobject = (() => {
         } else if (gameboardObject.gameboard[y + x] === " ") {
           blank = y + x;
         }
-        if (gameboardObject.gameboard[y + x] === AIPiece) {
-          AIPieces++;
-        }
-      }
-      if (AIPieces === 2 && blank != -1) {
-        game.addMove(blank);
-        return;
       }
       if (userSpots > 1 && blank != -1) {
         game.addMove(blank);
@@ -102,18 +116,16 @@ const AIobject = (() => {
         x = -3;
       }
     }
+    //check if ai can win
     const arrayDiagonal = [
       [0, 4, 8],
       [2, 4, 6],
     ];
     for (let x = 0; x < 2; x++) {
-      userSpots = 0;
       blank = -1;
       AIPieces = 0;
       for (let y = 0; y < 3; y++) {
-        if (gameboardObject.gameboard[arrayDiagonal[x][y]] === userPiece) {
-          userSpots++;
-        } else if (gameboardObject.gameboard[arrayDiagonal[x][y]] === " ") {
+        if (gameboardObject.gameboard[arrayDiagonal[x][y]] === " ") {
           blank = arrayDiagonal[x][y];
         }
         if (gameboardObject.gameboard[arrayDiagonal[x][y]] === AIPiece) {
@@ -124,6 +136,18 @@ const AIobject = (() => {
         game.addMove(blank);
         return;
       }
+    }
+    //block user from winning
+    for (let x = 0; x < 2; x++) {
+      userSpots = 0;
+      blank = -1;
+      for (let y = 0; y < 3; y++) {
+        if (gameboardObject.gameboard[arrayDiagonal[x][y]] === userPiece) {
+          userSpots++;
+        } else if (gameboardObject.gameboard[arrayDiagonal[x][y]] === " ") {
+          blank = arrayDiagonal[x][y];
+        }
+      }
       if (userSpots > 1 && blank != -1) {
         game.addMove(blank);
         return;
@@ -132,7 +156,6 @@ const AIobject = (() => {
     userSpots = 0;
     AIPieces = 0;
     blank = -1;
-    const cornerPieces = [0, 2, 6, 8];
     for (let x = 0; x < 4; x++) {
       if (gameboardObject.gameboard[cornerPieces[x]] === userPiece) {
         userSpots++;
@@ -142,17 +165,80 @@ const AIobject = (() => {
         blank = cornerPieces[x];
       }
     }
-    if (userSpots > 1 && blank != -1 && AIPieces + userSpots != 4) {
+    userSpots = 0;
+    AIPieces = 0;
+    blank = -1;
+    if (userSpots > 1 && blank != -1 && AIPieces != 1) {
       game.addMove(blank);
       return;
     }
-
-    for (let z = 8; z >= 0; z--) {
-      if (z != blank && gameboardObject.gameboard[z] === " ") {
-        game.addMove(z);
-        return;
-      } else if (z === blank && gameboardObject.gameboard[z] === " ") {
+    /* if (game.turnNum === 3) {
+      let cornerPiecesUser = 0;
+      for (let x = 0; x < 4; x++) {
+        if (gameboardObject.gameboard[cornerPieces[x]] === userPiece) {
+          cornerPiecesUser++;
+        }
+      }
+      if (
+        cornerPiecesUser > 1 &&
+        (gameboardObject.gameboard[0] !== userPiece ||
+          gameboardObject.gameboard[2] !== userPiece) &&
+        (gameboardObject.gameboard[6] !== userPiece ||
+          gameboardObject.gameboard[8] !== userPiece)
+      ) {
         game.addMove(3);
+        return;
+      }
+    } */
+    const cornerScenarios1 = [];
+    const cornerScenarios2 = [];
+
+    if (gameboardObject.gameboard[4] !== userPiece) {
+      if (
+        gameboardObject.gameboard[0] === userPiece &&
+        (gameboardObject.gameboard[7] === userPiece ||
+          gameboardObject.gameboard[8] === userPiece)
+      ) {
+        if (
+          gameboardObject.gameboard[7] === userPiece &&
+          gameboardObject.gameboard[6] === " "
+        ) {
+          game.addMove(6);
+          return;
+        } else if (gameboardObject.gameboard[7] === " ") {
+          game.addMove(7);
+          return;
+        }
+      }
+    }
+
+    if (gameboardObject.gameboard[4] !== userPiece) {
+      if (
+        gameboardObject.gameboard[6] === userPiece &&
+        gameboardObject.gameboard[2] === userPiece
+      ) {
+        if (gameboardObject.gameboard[7] === " ") {
+          game.addMove(7);
+          return;
+        }
+      }
+    }
+
+    if (gameboardObject.gameboard[4] !== userPiece) {
+      if (
+        gameboardObject.gameboard[7] === userPiece &&
+        gameboardObject.gameboard[2] === userPiece
+      ) {
+        if (gameboardObject.gameboard[5] === " ") {
+          game.addMove(5);
+          return;
+        }
+      }
+    }
+
+    for (let z = 0; z < 9; z++) {
+      if (gameboardObject.gameboard[z] === " ") {
+        game.addMove(z);
         return;
       }
     }
@@ -237,47 +323,7 @@ function addEvents() {
     });
   }
 }
-//player one piece chosen-----------------------------------------------------------------
-let tempPlayer1;
-let tempPlayer2;
-function player1Chosen(playerPiece) {
-  if (tempPlayer1) {
-    if (document.getElementById("name").value) {
-      tempPlayer2 = playerFactory(
-        document.getElementById("name").value,
-        playerPiece
-      );
-      localStorage.setItem("player1name", tempPlayer1.name);
-      localStorage.setItem("player1piece", tempPlayer1.playerPiece);
-      localStorage.setItem("player2name", tempPlayer2.name);
-      localStorage.setItem("player2piece", tempPlayer2.playerPiece);
-      window.location.href = "board.html";
-    }
-  } else if (document.getElementById("name").value) {
-    tempPlayer1 = playerFactory(
-      document.getElementById("name").value,
-      playerPiece
-    );
-    document.getElementById("getUserInput").innerHTML =
-      "Enter Name for Player 2";
-    document.getElementById(playerPiece).parentElement.remove();
-    document.getElementById("AI").style.visibility = "visible";
-    document.getElementById("AI").style.position = "relative";
-    document.getElementById("name").value = "";
-  }
-}
+
 function reset() {
   window.location.reload();
-}
-function vsAI() {
-  localStorage.setItem("player1name", tempPlayer1.name);
-  localStorage.setItem("player1piece", tempPlayer1.playerPiece);
-
-  localStorage.setItem("player2name", "AI");
-  if (tempPlayer1.playerPiece === "X") {
-    localStorage.setItem("player2piece", "O");
-  } else {
-    localStorage.setItem("player2piece", "X");
-  }
-  window.location.href = "board.html";
 }
