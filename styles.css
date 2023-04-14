@@ -39,9 +39,10 @@ header {
   text-align: center;
   vertical-align: top;
   border: 10px solid;
-  background-color: grey;
+  background-color: red;
   font-size: 75px;
   max-width: 100%;
+  max-height: 100%;
 }
 #space1,
 #space4,
