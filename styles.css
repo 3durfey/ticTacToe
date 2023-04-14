@@ -71,7 +71,7 @@ footer {
   width: 500px;
   top: 500px;
   background-color: red;
-  visibility: visible;
+  visibility: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
