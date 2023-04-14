@@ -153,45 +153,6 @@ const AIobject = (() => {
         return;
       }
     }
-    userSpots = 0;
-    AIPieces = 0;
-    blank = -1;
-    for (let x = 0; x < 4; x++) {
-      if (gameboardObject.gameboard[cornerPieces[x]] === userPiece) {
-        userSpots++;
-      } else if (gameboardObject.gameboard[cornerPieces[x]] === AIPiece) {
-        AIPieces++;
-      } else if (gameboardObject.gameboard[cornerPieces[x]] === " ") {
-        blank = cornerPieces[x];
-      }
-    }
-    userSpots = 0;
-    AIPieces = 0;
-    blank = -1;
-    if (userSpots > 1 && blank != -1 && AIPieces != 1) {
-      game.addMove(blank);
-      return;
-    }
-    /* if (game.turnNum === 3) {
-      let cornerPiecesUser = 0;
-      for (let x = 0; x < 4; x++) {
-        if (gameboardObject.gameboard[cornerPieces[x]] === userPiece) {
-          cornerPiecesUser++;
-        }
-      }
-      if (
-        cornerPiecesUser > 1 &&
-        (gameboardObject.gameboard[0] !== userPiece ||
-          gameboardObject.gameboard[2] !== userPiece) &&
-        (gameboardObject.gameboard[6] !== userPiece ||
-          gameboardObject.gameboard[8] !== userPiece)
-      ) {
-        game.addMove(3);
-        return;
-      }
-    } */
-    const cornerScenarios1 = [];
-    const cornerScenarios2 = [];
 
     if (gameboardObject.gameboard[4] !== userPiece) {
       if (

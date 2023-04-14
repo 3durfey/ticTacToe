@@ -75,6 +75,15 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 10px;
+  border: solid;
+}
+.winnerAlert > button {
+  color: red;
+  height: 30px;
+  width: 100px;
+  border-radius: 10px;
+  border: solid black;
 }
 #AI {
   visibility: hidden;
