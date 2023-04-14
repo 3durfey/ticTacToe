@@ -41,6 +41,7 @@ header {
   border: 10px solid;
   background-color: grey;
   font-size: 75px;
+  max-width: 100%;
 }
 #space1,
 #space4,
