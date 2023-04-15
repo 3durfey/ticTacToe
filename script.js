@@ -10,12 +10,7 @@ const playerFactory = (name, playerPiece) => {
 };
 player1 = playerFactory("User", "X");
 player2 = playerFactory("AI", "O");
-function setNames() {
-  player1Display.innerHTML = "User" + "(X)";
-  player2Display.innerHTML = "Computer" + "(O)";
-  player1Display.style.color = "green";
-  game.AI = true;
-}
+
 //object for game board
 const gameboardObject = (() => {
   let gameboard = [" ", " ", " ", " ", " ", " ", " ", " ", " "];
@@ -116,7 +111,7 @@ const AIobject = (() => {
         x = -3;
       }
     }
-    //check if ai can win
+    //check if ai can win diagonal
     const arrayDiagonal = [
       [0, 4, 8],
       [2, 4, 6],
@@ -137,7 +132,7 @@ const AIobject = (() => {
         return;
       }
     }
-    //block user from winning
+    //block user from winning diagonal
     for (let x = 0; x < 2; x++) {
       userSpots = 0;
       blank = -1;
@@ -153,7 +148,7 @@ const AIobject = (() => {
         return;
       }
     }
-
+    //specific blocks
     if (gameboardObject.gameboard[4] !== userPiece) {
       if (
         gameboardObject.gameboard[0] === userPiece &&
@@ -172,7 +167,7 @@ const AIobject = (() => {
         }
       }
     }
-
+    //specific blocks
     if (gameboardObject.gameboard[4] !== userPiece) {
       if (
         gameboardObject.gameboard[6] === userPiece &&
@@ -184,7 +179,7 @@ const AIobject = (() => {
         }
       }
     }
-
+    //specific blocks
     if (gameboardObject.gameboard[4] !== userPiece) {
       if (
         gameboardObject.gameboard[7] === userPiece &&
@@ -196,7 +191,7 @@ const AIobject = (() => {
         }
       }
     }
-
+    //random move
     for (let z = 0; z < 9; z++) {
       if (gameboardObject.gameboard[z] === " ") {
         game.addMove(z);
@@ -258,13 +253,6 @@ const game = (() => {
     gameboardObject.displayBoard();
     checkForWinner();
     turn === player1 ? (turn = player2) : (turn = player1);
-    if (turn === player1 && winner === false) {
-      player1Display.style.color = "green";
-      player2Display.style.color = "black";
-    } else {
-      player2Display.style.color = "green";
-      player1Display.style.color = "black";
-    }
     this.turnNum++;
     if ((AI = true && turn.name === "AI")) {
       AIobject.move(turn.playerPiece);
@@ -280,7 +268,13 @@ function addEvents() {
   }
   for (let x = 0; x < 9; x++) {
     gameBtns[x].addEventListener("click", function () {
-      game.addMove(x);
+      if (
+        game.turn === player1 &&
+        gameBtns[x].innerHTML !== "X" &&
+        gameBtns[x].innerHTML !== "O"
+      ) {
+        game.addMove(x);
+      }
     });
   }
 }
